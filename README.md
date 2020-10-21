@@ -63,29 +63,18 @@
 * MSAEz 로 모델링한 이벤트스토밍 결과:  
 ![image](https://user-images.githubusercontent.com/16017769/96681709-af3c4080-13b2-11eb-9945-f825a14ee5c8.png)
 
-
-
-```
-# 도메인 서열
-        - Core Domain:  접수 및 배송 관리 : 없어서는 안될 핵심 서비스이며, 연견 Up-time SLA 수준을 99.999% 목표, 배포주기는  1주일 1회 미만
-        - Supporting Domain:   접수 상태 페이지 : 경쟁력을 내기위한 서비스이며, SLA 수준은 연간 80% 이상 uptime 목표, 배포주기는 각 팀의 자율이나 표준 스프린트 주기가 1주일 이므로 1주일 1회 이상을 기준으로 함.
-        - General Domain:   결제 관리 : 결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음 (핑크색으로 이후 전환할 예정)
-```
-
 ### 완성본에 대한 비기능적 요구사항을 커버하는지 검증
-![제목없음22](https://user-images.githubusercontent.com/42608068/96582783-c2013780-1316-11eb-8bfc-dba64c7af837.png)
-
     1. 트랜잭션
-    - 고객의 주문에 따라 결제가 진행된다(결제가 정상적으로 완료되지 않으면 주문이 되지 않는다) > Sync
-    - 고객의 결제 완료에 따라 배송이 진행된다 > Async
+    - 고객의 주문에 따라 재고가 감소된다. > Sync
+    - 고객의 주문취소에 따라 재고가 증가된다. > Async
     2. 장애격리
-    - 배송 서비스에 장애가 발생하더라도 주문 및 결제는 정상적으로 처리 가능하다 > Async(event driven)
+    - 재고 관리에 주문 취소는 정상적으로 처리 가능하다 > Async(event driven)
     - 서킷 브레이킹 프레임워크 > istio-injection + DestinationRule
     3. 성능
-    - 고객은 본인의 상태 정보를 확인할 수 있다 > CQRS
+    - 고객은 본인의 예약의 재고 정보를 확인할 수 있다 > CQRS
 
 ## 헥사고날 아키텍처 다이어그램 도출
-![제목없음21](https://user-images.githubusercontent.com/42608068/96549943-260e0680-12eb-11eb-8119-394cb324883d.png)
+![image](https://user-images.githubusercontent.com/16017769/96682871-608fa600-13b4-11eb-9726-1e8a3da71314.png)
 
     - Chris Richardson, MSA Patterns 참고하여 Inbound adaptor와 Outbound adaptor를 구분함
     - 호출관계에서 PubSub 과 Req/Resp 를 구분함
