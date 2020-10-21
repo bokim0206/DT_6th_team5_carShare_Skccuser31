@@ -61,22 +61,9 @@
 
 ## 이벤트스토밍
 * MSAEz 로 모델링한 이벤트스토밍 결과:  
-![image](https://user-images.githubusercontent.com/42608068/96539757-c9085580-12d6-11eb-8721-8bb7e0601d53.png)
+![image](https://user-images.githubusercontent.com/16017769/96681709-af3c4080-13b2-11eb-9945-f825a14ee5c8.png)
 
-### 이벤트 도출 
-![제목 없음1](https://user-images.githubusercontent.com/42608068/96541160-60bb7300-12da-11eb-8eda-4beb637fa24f.png)
 
-### 부적격 이벤트 탈락
-![제목 없음2](https://user-images.githubusercontent.com/42608068/96541195-6fa22580-12da-11eb-94c0-9efb0947e5aa.png)
-
-### 액터, 커맨드 부착하여 읽기 좋게
-![제목 없음3](https://user-images.githubusercontent.com/42608068/96541203-77fa6080-12da-11eb-8a8a-50a018a72961.png)
-
-### 어그리게잇으로 묶기
-![image](https://user-images.githubusercontent.com/42608068/96597010-4c05cc00-1328-11eb-8372-5241800cf7fe.png)
-
-### 바운디드 컨텍스트로 묶기
-![제목 없음5](https://user-images.githubusercontent.com/42608068/96541235-919ba800-12da-11eb-8c49-84655f2ca88e.png)
 
 ```
 # 도메인 서열
@@ -85,31 +72,6 @@
         - General Domain:   결제 관리 : 결제서비스로 3rd Party 외부 서비스를 사용하는 것이 경쟁력이 높음 (핑크색으로 이후 전환할 예정)
 ```
 
-### 폴리시 부착 
-![제목 없음6](https://user-images.githubusercontent.com/42608068/96541251-99f3e300-12da-11eb-99f9-8a9027a7b855.png)
-
-### 폴리시의 이동과 컨텍스트 매핑 (점선은 Pub/Sub, 실선은 Req/Resp)
-![제목 없음7](https://user-images.githubusercontent.com/42608068/96541279-a11af100-12da-11eb-9d0d-3cf209f7216b.png)
-
-### 완성된 모형
-![제목 없음11](https://user-images.githubusercontent.com/42608068/96543764-0b826000-12e0-11eb-9296-112459a6027b.png)
-
-### 완성본에 대한 기능적 요구사항을 커버하는지 검증
-![제목 없음12](https://user-images.githubusercontent.com/42608068/96543922-72077e00-12e0-11eb-91bf-ae6aaf5e8fbb.png)
-    
-    - 고객이 공유차를 선택하여 렌탈한다 (ok)
-    - 고객이 결제하여 접수한다 (ok)
-    - 업체가 공유차를 고객위치로 가져다놓는다 (ok)
-
-![제목 없음13](https://user-images.githubusercontent.com/42608068/96543936-79c72280-12e0-11eb-98a2-0c67478f6926.png)
-
-    - 고객이 주문을 취소할 수 있다 (ok)
-    - 렌탈이 취소되면 배송이 취소된다 (ok)
-
-![제목 없음14](https://user-images.githubusercontent.com/42608068/96543997-9cf1d200-12e0-11eb-9a71-9aa743f7de44.png)
-   
-    - 고객이 자신의 렌탈 정보를 조회한다 (ok)
-    
 ### 완성본에 대한 비기능적 요구사항을 커버하는지 검증
 ![제목없음22](https://user-images.githubusercontent.com/42608068/96582783-c2013780-1316-11eb-8bfc-dba64c7af837.png)
 
