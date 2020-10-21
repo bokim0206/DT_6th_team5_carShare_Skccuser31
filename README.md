@@ -187,9 +187,11 @@ Shortest transaction:           0.01
 
   
 * 키알리(kiali)화면에 서킷브레이커 동작 확인
-![image](https://user-images.githubusercontent.com/16017769/96751257-e983fd00-1407-11eb-8884-28e51b516dcd.png)
-![image](https://user-images.githubusercontent.com/16017769/96751289-f56fbf00-1407-11eb-9200-1d3b195f17e8.png)
 
+
+![image](https://user-images.githubusercontent.com/16017769/96751257-e983fd00-1407-11eb-8884-28e51b516dcd.png)
+
+![image](https://user-images.githubusercontent.com/16017769/96751289-f56fbf00-1407-11eb-9200-1d3b195f17e8.png)
 
 
 
