@@ -197,16 +197,9 @@ Shortest transaction:           0.01
 
 ### 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
+Targets unkown 처리 불가로 미처리
 
-- Deployment 배포시 resource 설정 적용
-![image](https://user-images.githubusercontent.com/42608068/96592913-e44d8200-1323-11eb-8d94-386116ecaf2c.png)
-
-- replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 5프로를 넘어서면 replica 를 10개까지 늘려준다
-![image](https://user-images.githubusercontent.com/42608068/96592628-8de04380-1323-11eb-8288-2288a9e189ec.png)
-- 오토스케일이 어떻게 되고 있는지 HPA 모니터링을 걸어둔다, 어느정도 시간이 흐른 후, 스케일 아웃이 벌어지는 것을 확인할 수 있다
-![image](https://user-images.githubusercontent.com/16017769/96661016-17c0f880-1386-11eb-86a9-6788ba45bd1a.png)
-- kubectl get으로 HPA을 확인하면 CPU 사용률이 135%로 증가됐다.
-![image](https://user-images.githubusercontent.com/16017769/96661066-30311300-1386-11eb-8d6c-7b6e2f67f83a.png)
+![image](https://user-images.githubusercontent.com/16017769/96752998-336de280-140a-11eb-90d0-467d3cfa5dbe.png)
 
 ## 무정지 재배포
 - Readiness Probe 및 Liveness Probe 설정(buildspec.yml 설정)
@@ -219,14 +212,9 @@ Shortest transaction:           0.01
 
 
 ## Liveness Probe
-- pod 삭제
-
-![image](https://user-images.githubusercontent.com/16017769/96661174-6d95a080-1386-11eb-9f76-ab9a995c6286.png)
-
-- 자동 생성된 pod 확인
-
-![image](https://user-images.githubusercontent.com/16017769/96661206-81d99d80-1386-11eb-8b9d-539e36ef02e8.png)
-
+```
+미처리
+```
 
 ## ConfigMap 사용
 
@@ -241,11 +229,11 @@ metadata:
   name: my-config
   namespace: carshare
 data:
-  api.payment.url: http://carsharepayment:8080
+  api.payment.url: http://carsharestock:8080
 ```
 my-config라는 ConfigMap을 생성하고 key값에 도메인 url을 등록한다. 
 
-* carshareorder/buildsepc.yaml (configmap 사용)
+* carsharestock/buildsepc.yaml (configmap 사용)
 ```
  cat  <<EOF | kubectl apply -f -
         apiVersion: apps/v1
@@ -271,40 +259,40 @@ my-config라는 ConfigMap을 생성하고 key값에 도메인 url을 등록한�
                   ports:
                     - containerPort: 8080
                   env:
-                    - name: api.payment.url
+                    - name: api.stock.url
                       valueFrom:
                         configMapKeyRef:
                           name: my-config
-                          key: api.payment.url
+                          key: api.stock.url
                   imagePullPolicy: Always
                 
         EOF
 ```
 Deployment yaml에 해단 configMap 적용
 
-* PaymentService.java
+* StockService.java
 ```
-@FeignClient(name="payment", contextId = "payment", url="${api.payment.url}")
-public interface PaymentService {
+@FeignClient(name="stock", contextId = "stock", url="${api.stock.url}")
+public interface StockService {
 
-    @RequestMapping(method= RequestMethod.POST, path="/payments")
-    public void pay(@RequestBody Payment payment);
+    @RequestMapping(method= RequestMethod.POST, path="/stocks")
+    public void stock(@RequestBody Stock stock);
 
 }
 ```
 url에 configMap 적용
 
-* kubectl describe pod carshareorder-bdd8c8c4c-l52h6  -n carshare
+* kubectl describe pod carsharestock-74cbf5f6dc-9bqgd  -n carshare
 ```
 Containers:
   carshareorder:
-    Container ID:   docker://f3c983b12a4478f3b4a7ee5d7fea308638903eb62e0941edd33a3bce5f5f6513
-    Image:          496278789073.dkr.ecr.ap-southeast-2.amazonaws.com/carshareorder:9289bba10d5b0758ae9f6279d56ff77b818b8b63
-    Image ID:       docker-pullable://496278789073.dkr.ecr.ap-southeast-2.amazonaws.com/carshareorder@sha256:95395c95d1bc19ceae8eb5cc0b288b38dc439359a084610f328407dacd694a81
+    Container ID:   docker://f373677a0487760940bc736d38517e0fc3a03c953428bc86e8f5fd6b1ca8bd0c
+    Image:          467263215646.dkr.ecr.ap-southeast-2.amazonaws.com/user31carsharestock:v2
+    Image ID:       docker-pullable://467263215646.dkr.ecr.ap-southeast-2.amazonaws.com/user31carsharestock@sha256:9589e46f56a5aec63aaf4114bc0ebf8f46a3bfb8a2630fb59c5ec87f840a15f9
     Port:           8080/TCP
     Host Port:      0/TCP
     State:          Running
-      Started:      Wed, 21 Oct 2020 02:13:01 +0000
+      Started:      Wed, 21 Oct 2020 16:10:45 +0000
     Ready:          True
     Restart Count:  0
     Limits:
@@ -312,7 +300,7 @@ Containers:
     Requests:
       cpu:        200m
     Liveness:     http-get http://:8080/ delay=120s timeout=2s period=5s #success=1 #failure=5
-    Readiness:    http-get http://:8080/ delay=30s timeout=2s period=5s #success=1 #failure=10
+    Readiness:    http-get http://:15021/healthz/ready delay=1s timeout=1s period=2s #success=1 #failure=30
     Environment:
       api.payment.url:  <set to the key 'api.payment.url' of config map 'my-config'>  Optional: false
     Mounts:
