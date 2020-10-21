@@ -79,16 +79,8 @@
 
    
 # 구현
-
-## 시나리오 테스트결과
-| 기능 | 이벤트 Payload |
-|---|:---:|
-| 1.고객이 공유차 렌탈을 접수한다.</br>2. 결제가 정상적으로 완료되면 접수가 진행된다. (Sync)</br>3.접수가 완료되면 배송이 시작된다. (Async)</br>3.배송이 시작되면 접수정보의 상태를 변경한다. (Async)|![제목없음21](https://user-images.githubusercontent.com/42608068/96580615-831db280-1313-11eb-930e-be9b41b256ad.png)|
-| 4.고객이 공유차 렌탈을 취소한다.</br>5. 배송 취소가 정상적으로 완료되면 결제 취소가 진행된다. (Sync)</br>6.결제 취소도 정상적으로 이어지면 접수가 최종적으로 취소된다. (Async)|![제목없음21](https://user-images.githubusercontent.com/42608068/96580830-d7289700-1313-11eb-985b-aa1036db3e57.png)|
-| 7.고객이 접수 상태를 조회한다.|![제목없음21](https://user-images.githubusercontent.com/42608068/96581350-a5640000-1314-11eb-8336-0474e2d1716b.png)|
-
 ## DDD 의 적용
-분석/설계 단계에서 도출된 MSA는 총 5개로 아래와 같다.
+분석/설계 단계에서 도출된 MSA는 총 5개(stock 추가)로 아래와 같다.
 * customerpage 는 CQRS 를 위한 서비스
 
 | MSA | 기능 | port | 조회 API | Gateway 사용시 |
