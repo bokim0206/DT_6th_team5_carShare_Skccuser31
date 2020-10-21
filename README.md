@@ -155,11 +155,42 @@ EOF
 * 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
   - 동시 사용자 5명
   - 2초 실행 
-![image](https://user-images.githubusercontent.com/70302900/96588949-38099c80-131f-11eb-9e37-5f1846fca268.png)
+```
+HTTP/1.1 503     0.03 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 200     0.04 secs:     360 bytes ==> GET  /stocks
+HTTP/1.1 200     0.04 secs:     360 bytes ==> GET  /stocks
+HTTP/1.1 503     0.03 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 200     0.05 secs:     360 bytes ==> GET  /stocks
+HTTP/1.1 200     0.05 secs:     360 bytes ==> GET  /stocks
+HTTP/1.1 503     0.03 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 503     0.02 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 200     0.04 secs:     360 bytes ==> GET  /stocks
+HTTP/1.1 503     0.02 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 503     0.02 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 503     0.02 secs:      81 bytes ==> GET  /stocks
+HTTP/1.1 200     0.03 secs:     360 bytes ==> GET  /stocks
 
+Lifting the server siege...
+Transactions:                     87 hits
+Availability:                  65.91 %
+Elapsed time:                   1.12 secs
+Data transferred:               0.03 MB
+Response time:                  0.06 secs
+Transaction rate:              77.68 trans/sec
+Throughput:                     0.03 MB/sec
+Concurrency:                    4.85
+Successful transactions:          87
+Failed transactions:              45
+Longest transaction:            0.10
+Shortest transaction:           0.01
+ ```
 
+  
 * 키알리(kiali)화면에 서킷브레이커 동작 확인
-![image](https://user-images.githubusercontent.com/70302900/96589002-46f04f00-131f-11eb-92b7-dd13ce203382.png)
+![image](https://user-images.githubusercontent.com/16017769/96751257-e983fd00-1407-11eb-8884-28e51b516dcd.png)
+![image](https://user-images.githubusercontent.com/16017769/96751289-f56fbf00-1407-11eb-9200-1d3b195f17e8.png)
+
+
 
 
 ### 오토스케일 아웃
