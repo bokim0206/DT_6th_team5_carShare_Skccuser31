@@ -222,52 +222,14 @@ Targets unkown 처리 불가로 미처리
 Application에서 특정 도메일 URL을 ConfigMap 으로 설정하여 운영/개발등 목적에 맞게 변경가능합니다.  
 
 * my-config.yaml
-```
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-config
-  namespace: carshare
-data:
-  api.payment.url: http://carsharestock:8080
-```
+![image](https://user-images.githubusercontent.com/16017769/96756286-d45e9c80-140e-11eb-86bd-863486e95a54.png)
+
 my-config라는 ConfigMap을 생성하고 key값에 도메인 url을 등록한다. 
 
 * carsharestock/buildsepc.yaml (configmap 사용)
-```
- cat  <<EOF | kubectl apply -f -
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: $_PROJECT_NAME
-          namespace: $_NAMESPACE
-          labels:
-            app: $_PROJECT_NAME
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: $_PROJECT_NAME
-          template:
-            metadata:
-              labels:
-                app: $_PROJECT_NAME
-            spec:
-              containers:
-                - name: $_PROJECT_NAME
-                  image: $AWS_ACCOUNT_ID.dkr.ecr.$_AWS_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION
-                  ports:
-                    - containerPort: 8080
-                  env:
-                    - name: api.stock.url
-                      valueFrom:
-                        configMapKeyRef:
-                          name: my-config
-                          key: api.stock.url
-                  imagePullPolicy: Always
-                
-        EOF
-```
+
+![image](https://user-images.githubusercontent.com/16017769/96756046-75992300-140e-11eb-879d-845e3e70e122.png)
+
 Deployment yaml에 해단 configMap 적용
 
 * StockService.java
