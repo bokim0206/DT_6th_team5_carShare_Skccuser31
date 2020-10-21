@@ -136,21 +136,7 @@ CQRS 를 위한 customerpage 서비스만 DB를 구분하여 적용함. 인메�
 
 ```
 pom.xml 에 적용
-<!-- 
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
- -->
-		<dependency>
-		    <groupId>org.hsqldb</groupId>
-		    <artifactId>hsqldb</artifactId>
-		    <version>2.4.0</version>
-		    <scope>runtime</scope>
-		</dependency>
-```
-
+![image](https://user-images.githubusercontent.com/16017769/96690883-31cafd00-13bf-11eb-9513-aa4375aaf265.png)
 
 ## 동기식 호출 과 Fallback 처리
 
