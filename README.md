@@ -56,12 +56,8 @@
 # 분석/설계
 
 ## AS-IS 조직 (Horizontally-Aligned)
-![79684144-2a893200-826a-11ea-9a01-79927d3a0107](https://user-images.githubusercontent.com/42608068/96371393-84789f00-119c-11eb-80d9-ffbcab38ff84.png)
-
-
+->
 ## TO-BE 조직 (Vertically-Aligned)
-![제목 없음23](https://user-images.githubusercontent.com/42608068/96586618-34284b00-131c-11eb-89b0-707eaa8eae82.png)
-
 
 ## 이벤트스토밍
 * MSAEz 로 모델링한 이벤트스토밍 결과:  
