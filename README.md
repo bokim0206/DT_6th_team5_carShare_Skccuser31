@@ -8,7 +8,7 @@
  1. 배송관리 : https://github.com/srwzz/carShareDelivery.git
  1. 고객페이지 : https://github.com/srwzz/carShareStatusview.git
  1. 게이트웨이 : https://github.com/srwzz/carShareGateway.git
- 1. 재고관리 : https://github.com/srwzz/carShareProduct.git
+ 1. (추가)재고관리 : https://github.com/srwzz/carShareProduct.git
 
 
 # Table of contents
