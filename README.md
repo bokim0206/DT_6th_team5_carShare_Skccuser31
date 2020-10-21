@@ -8,7 +8,7 @@
  1. 배송관리 : https://github.com/srwzz/carShareDelivery.git
  1. 고객페이지 : https://github.com/srwzz/carShareStatusview.git
  1. 게이트웨이 : https://github.com/srwzz/carShareGateway.git
- 1. (추가)재고관리 : https://github.com/srwzz/carShareProduct.git
+ 1. (추가)재고관리 : https://github.com/srwzz/carShareStock.git
 
 
 # Table of contents
@@ -38,15 +38,19 @@
 1. 고객이 렌탈을 취소할 수 있다.
 1. 렌탈이 취소되면 배송이 취소된다.
 1. 고객이 자신의 렌탈 정보를 조회한다.
+1. (추가)주문 접수시 재고 증감
 
 ## 비기능적 요구사항
 1. 트랜잭션
     1. 결제가 되지 않은 주문건은 아예 접수가 성립되지 않아야 한다(Sync 호출)
+    1. (추가)주문 접수시 재고가 0인경우 접수가 성립죄지 않아야 한다(Sync 호출)
 1. 장애격리
     1. 배송관리 기능이 수행되지 않더라도 접수는 정상적으로 처리 가능하다(Async(event-driven), Eventual Consistency)
     1. 접수시스템이 과중되면 사용자를 잠시동안 받지 않고 결제를 잠시후에 하도록 유도한다(Circuit breaker, fallback)
+    1. (추가)주문 취소시 재고 관리가 되지 않더라도 접수는 취소되어야 한다.(Async(event-driven), Eventual Consistency)
 1. 성능
     1. 고객이 본인의 렌탈 상태 및 이력을 접수시스템에서 확인할 수 있어야 한다(CQRS)
+    1. (추가)고객이 접수 후 재고 확인을 할 수 있다(CQRS)
 
 
 # 분석/설계
