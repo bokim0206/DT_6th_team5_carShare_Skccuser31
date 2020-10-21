@@ -139,6 +139,31 @@ public interface StockService {
 }
 ```
 
+접수요청을 받은 직후(@PostPersist) 결제를 요청하도록 처리
+# Order.java (Entity)
+```
+    @PostPersist
+    public void onPostPersist(){
+        Ordered ordered = new Ordered();
+        BeanUtils.copyProperties(this, ordered);
+        ordered.publishAfterCommit();
+
+        carshare.external.Payment payment = new carshare.external.Payment();
+        payment.setOrderId(this.getId());
+        payment.setProductId(this.getProductId());
+        payment.setQty(this.getQty());
+        payment.setStatus("OrderApproved");
+        OrderApplication.applicationContext.getBean(carshare.external.PaymentService.class)
+            .pay(payment);
+            
+        carshare.external.Stock stock = new carshare.external.Stock();
+        stock.setOrderId(this.getId());
+        OrderApplication.applicationContext.getBean(carshare.external.StockService.class)
+            .reduce(stock);
+            
+    }
+
+```
 
 ### 서킷 브레이킹 istio-injection + DestinationRule
 
