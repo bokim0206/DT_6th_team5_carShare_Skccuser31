@@ -121,6 +121,14 @@ Git Hook 설정으로 연결된 GitHub의 소스 변경 발생 시 자동 배포
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
+* 동기식 호출을 위해 application.yml 파일에 API 추가
+```
+api:
+  order:
+    url: http://localhost:8081
+    
+```
+
 ### 서킷 브레이킹 istio-injection + DestinationRule
 
 * istio-injection 적용 (기 적용완료)
