@@ -92,35 +92,11 @@
 | stock | 재고 관리 | 8085 | http://localhost:8085/stocks | http://carsharepayment:8080/stocks |
 
 ## Gateway 적용
+```
+carShareGateway의 application.yml 에 적용
 
 ```
-spring:
-  profiles: docker
-  cloud:
-    gateway:
-      routes:
-        - id: order
-          uri: http://carshareorder:8080
-          predicates:
-            - Path=/orders/** 
-        - id: delivery
-          uri: http://carsharedelivery:8080
-          predicates:
-            - Path=/deliveries/**,/cancellations/**
-        - id: statusview
-          uri: http://carsharestatusview:8080
-          predicates:
-            - Path= /customerpages/**
-        - id: payment
-          uri: http://carsharepayment:8080
-          predicates:
-            - Path=/payments/**,/paymentCancellations/**
-	- id: stock
-          uri: http://stock:8080
-          predicates:
-            - Path=/stocks/** 
-```
-
+![image](https://user-images.githubusercontent.com/16017769/96737608-d453a200-13f8-11eb-8aa6-4d8e04795912.png)
 
 ## 폴리글랏 퍼시스턴스
 
