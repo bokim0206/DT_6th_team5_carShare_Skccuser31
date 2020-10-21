@@ -3,11 +3,12 @@
 5팀 자동차 공유 서비스 CNA개발 실습을 위한 프로젝트
 
 # 구현 Repository
- 1. 접수관리 : https://github.com/YoungDukGe1000Won/carShareOrder.git
- 1. 결제관리 : https://github.com/YoungDukGe1000Won/carSharePayment.git
- 1. 배송관리 : https://github.com/YoungDukGe1000Won/carShareDelivery.git
- 1. 고객페이지 : https://github.com/YoungDukGe1000Won/carShareStatusview.git
- 1. 게이트웨이 : https://github.com/YoungDukGe1000Won/carShareGateway.git
+ 1. 접수관리 : https://github.com/srwzz/carShareOrder.git
+ 1. 결제관리 : https://github.com/srwzz/carSharePayment.git
+ 1. 배송관리 : https://github.com/srwzz/carShareDelivery.git
+ 1. 고객페이지 : https://github.com/srwzz/carShareStatusview.git
+ 1. 게이트웨이 : https://github.com/srwzz/carShareGateway.git
+ 1. 재고관리 : https://github.com/srwzz/carShareProduct.git
 
 
 # Table of contents
