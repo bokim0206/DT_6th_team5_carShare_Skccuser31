@@ -122,12 +122,23 @@ Git Hook 설정으로 연결된 GitHub의 소스 변경 발생 시 자동 배포
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
 * 동기식 호출을 위해 application.yml 파일에 API 추가
+
+분석단계에서의 조건 중 하나로 접수(order)->stock 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 
+호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
+
+FeignClient 서비스 구현
 ```
-api:
-  order:
-    url: http://localhost:8081
-    
+# StockService.java
+
+@FeignClient(name="stock", contextId = "stock", url="${api.stock.url}", fallback = StockServiceFallback.class)
+public interface StockService {
+
+    @RequestMapping(method= RequestMethod.POST, path="/stocks")
+    public void reduce(@RequestBody Stock stock);
+
+}
 ```
+
 
 ### 서킷 브레이킹 istio-injection + DestinationRule
 
