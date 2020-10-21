@@ -54,10 +54,7 @@
 
 
 # 분석/설계
-
-## AS-IS 조직 (Horizontally-Aligned)
-->
-## TO-BE 조직 (Vertically-Aligned)
+ AS-IS 조직 (Horizontally-Aligned) -> TO-BE 조직 (Vertically-Aligned)
 
 ## 이벤트스토밍
 * MSAEz 로 모델링한 이벤트스토밍 결과:  
