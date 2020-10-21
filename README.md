@@ -97,6 +97,7 @@
 | delivery | 배송 관리 | 8082 | http://localhost:8082/deliveries | http://carsharedelivery:8080/deliveries |
 | customerpage | 상태 조회 | 8083 | http://localhost:8083/customerpages | http://carsharestatusview:8080/customerpages |
 | payment | 결제 관리 | 8084 | http://localhost:8084/payments | http://carsharepayment:8080/payments |
+| stock | 재고 관리 | 8085 | http://localhost:8085/stocks | http://carsharepayment:8080/stocks |
 
 ## Gateway 적용
 
@@ -122,6 +123,10 @@ spring:
           uri: http://carsharepayment:8080
           predicates:
             - Path=/payments/**,/paymentCancellations/**
+	- id: stock
+          uri: http://stock:8080
+          predicates:
+            - Path=/stocks/** 
 ```
 
 
