@@ -318,6 +318,11 @@ carsharestock   4/10    10           4           1h
 
 ```
 
+```
+$kubectl get hpa carsharestock -n carshare 
+NAME                                                 REFERENCE                   TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/alarm         Deployment/carsharestock               132%/15%   1         10          5       1h
+```
 
 ## 무정지 재배포
 - Readiness Probe 및 Liveness Probe 설정(buildspec.yml 설정)
