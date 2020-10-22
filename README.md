@@ -138,8 +138,9 @@ public interface StockService {
 ```
 
 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 재고 서비스가 장애가 나면 접수요청 못받는다는 것을 확인
-#stock 서비스를 잠시 내려놓음
+
 ```
+#stock 서비스를 잠시 내려놓음
 #접수요청 처리
 http localhost:8081/orders productId=1001 qty=1 status="order" stock=1  #Fail
 http localhost:8081/orders productId=1002 qty=3 status="order" stock=1  #Fail
