@@ -240,7 +240,29 @@ spec:
       baseEjectionTime: 5m
       maxEjectionPercent: 100
 EOF
+
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: order
+  namespace: carshare
+spec:
+  host: carshareorder
+  trafficPolicy:
+    connectionPool:
+      http:
+        http1MaxPendingRequests: 1
+        maxRequestsPerConnection: 1
+    outlierDetection:
+      interval: 1s
+      consecutiveErrors: 2
+      baseEjectionTime: 10s
+      maxEjectionPercent: 100
+EOF
+
 ```
+
 
 
 * 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
