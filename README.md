@@ -99,20 +99,48 @@
 
 ## Gateway 적용
 ```
-carShareGateway의 application.yml 에 적용
+carShareGateway의 application.yml 에 stock 서비스 추가
 
 ```
 ![image](https://user-images.githubusercontent.com/16017769/96737608-d453a200-13f8-11eb-8aa6-4d8e04795912.png)
 
 ## 폴리글랏 퍼시스턴스
 
-CQRS 를 위한 customerpage 서비스만 DB를 구분하여 적용함. 인메모리 DB인 hsqldb 사용.
+CQRS 를 위한 stock 서비스는 인메모리 DB인 hsqldb 사용 적용 함.
 
 ```
 pom.xml 에 적용
 
 ```
 ![image](https://user-images.githubusercontent.com/16017769/96690883-31cafd00-13bf-11eb-9513-aa4375aaf265.png)
+
+
+## 동기식 호출 과 Fallback 처리
+분석단계에서의 조건 중 하나로 접수(order)->결제(payment) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
+
+FeignClient 서비스 구현
+```
+@FeignClient(name="stock", contextId = "stock", url="${api.stock.url}", fallback =StockServiceFallback.class)
+public interface StockService {
+
+    @RequestMapping(method= RequestMethod.POST, path="/stocks")
+    public void reduce(@RequestBody Stock stock);
+
+
+```
+접수요청을 받은 직후(@PostPersist) 결제를 요청하도록 처리
+```
+        carshare.external.Stock stock = new carshare.external.Stock();
+        stock.setOrderId(this.getId());
+        OrderApplication.applicationContext.getBean(carshare.external.StockService.class)
+            .reduce(stock);
+
+```
+
+###  비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
+오더 취소가 이루어진 후에 재소 증가는 동기식이 아니라 비동기식으로 처리하여 재고 시스템의 처리를 위해 주문 취소가 블로킹되지 않도록 처리한다.
+이를 위하여 취소 기록을 남긴 후에 곧바로 취소 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
+
 
 
 
@@ -146,7 +174,7 @@ public interface StockService {
 ```
 
 접수요청을 받은 직후(@PostPersist) 결제를 요청하도록 처리
-# Order.java (Entity)
+Order.java (Entity)
 ```
     @PostPersist
     public void onPostPersist(){
