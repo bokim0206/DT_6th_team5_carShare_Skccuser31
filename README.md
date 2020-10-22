@@ -58,6 +58,9 @@
 
 ## 이벤트스토밍
 * MSAEz 로 모델링한 이벤트스토밍 결과:  
+
+![image](https://user-images.githubusercontent.com/16017769/96807026-8b2f3c80-1450-11eb-855c-eb872de98dbd.png)
+
 ![image](https://user-images.githubusercontent.com/16017769/96681709-af3c4080-13b2-11eb-9945-f825a14ee5c8.png)
 
 ### 완성본에 대한 비기능적 요구사항을 커버하는지 검증
@@ -71,6 +74,9 @@
     - 고객은 본인의 예약의 재고 정보를 확인할 수 있다 > CQRS
 
 ## 헥사고날 아키텍처 다이어그램 도출
+
+![image](https://user-images.githubusercontent.com/16017769/96807067-a0a46680-1450-11eb-92cd-141f4cf40b97.png)
+
 ![image](https://user-images.githubusercontent.com/16017769/96682871-608fa600-13b4-11eb-9726-1e8a3da71314.png)
 
     - Chris Richardson, MSA Patterns 참고하여 Inbound adaptor와 Outbound adaptor를 구분함
