@@ -153,51 +153,8 @@ Git Hook 설정으로 연결된 GitHub의 소스 변경 발생 시 자동 배포
 ![image](https://user-images.githubusercontent.com/16017769/96723971-38229e80-13ea-11eb-997c-d21ac945deab.png)
 
 
-## 동기식 호출 / 서킷 브레이킹 / 장애격리
+## 서킷 브레이킹 / 장애격리
 
-* 동기식 호출을 위해 application.yml 파일에 API 추가
-
-분석단계에서의 조건 중 하나로 접수(order)->stock 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 
-호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다.
-
-FeignClient 서비스 구현
-```
-# StockService.java
-
-@FeignClient(name="stock", contextId = "stock", url="${api.stock.url}", fallback = StockServiceFallback.class)
-public interface StockService {
-
-    @RequestMapping(method= RequestMethod.POST, path="/stocks")
-    public void reduce(@RequestBody Stock stock);
-
-}
-```
-
-접수요청을 받은 직후(@PostPersist) 결제를 요청하도록 처리
-Order.java (Entity)
-```
-    @PostPersist
-    public void onPostPersist(){
-        Ordered ordered = new Ordered();
-        BeanUtils.copyProperties(this, ordered);
-        ordered.publishAfterCommit();
-
-        carshare.external.Payment payment = new carshare.external.Payment();
-        payment.setOrderId(this.getId());
-        payment.setProductId(this.getProductId());
-        payment.setQty(this.getQty());
-        payment.setStatus("OrderApproved");
-        OrderApplication.applicationContext.getBean(carshare.external.PaymentService.class)
-            .pay(payment);
-            
-        carshare.external.Stock stock = new carshare.external.Stock();
-        stock.setOrderId(this.getId());
-        OrderApplication.applicationContext.getBean(carshare.external.StockService.class)
-            .reduce(stock);
-            
-    }
-
-```
 
 ### 서킷 브레이킹 istio-injection + DestinationRule
 
