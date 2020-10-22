@@ -128,7 +128,7 @@ public interface StockService {
 
 
 ```
-접수요청을 받은 직후(@PostPersist) 결제를 요청하도록 처리
+접수요청을 받은 직후(@PostPersist) 재고 서비스를 요청하도록 처리
 ```
         carshare.external.Stock stock = new carshare.external.Stock();
         stock.setOrderId(this.getId());
@@ -137,12 +137,41 @@ public interface StockService {
 
 ```
 
+동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 재고 서비스가 장애가 나면 접수요청 못받는다는 것을 확인
+#stock 서비스를 잠시 내려놓음
+```
+#접수요청 처리
+http localhost:8081/orders productId=1001 qty=1 status="order" stock=1  #Fail
+http localhost:8081/orders productId=1002 qty=3 status="order" stock=1  #Fail
+
+#결제 서비스 재기동
+cd carsharepayment
+mvn spring-boot:run
+
+#접수요청 처리 성공
+http localhost:8081/orders productId=1001 qty=1 status="order" stock=1  #Success
+http localhost:8081/orders productId=1002 qty=3 status="order" stock=1  #Success
+```
 
 
 ##  비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
 오더 취소가 이루어진 후에 재소 증가는 동기식이 아니라 비동기식으로 처리하여 재고 시스템의 처리를 위해 주문 취소가 블로킹되지 않도록 처리한다.
 이를 위하여 취소 기록을 남긴 후에 곧바로 취소 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
 
+```
+@Entity
+@Table(name="Order_table")
+public class Order {
+
+ ...
+    @PostPersist
+    public void onPostPersist(){
+        Ordercanlled ordercanlled = new Ordercanlled();
+        BeanUtils.copyProperties(this, ordercanlled);
+        ordercanlled.publishAfterCommit();    
+    }
+}
+```
 
 Stock에서는 취소 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다
 
