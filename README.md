@@ -246,7 +246,7 @@ EOF
 * 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
   - 동시 사용자 5명
   - 2초 실행 
-  siege -c5 -t2S -v http://a78a3fd18616c45ca8aed88956de4fee-222272609.ap-southeast-2.elb.amazonaws.com:8080/stocks
+ 
 ```
 HTTP/1.1 503     0.03 secs:      81 bytes ==> GET  /stocks
 HTTP/1.1 200     0.04 secs:     360 bytes ==> GET  /stocks
