@@ -137,11 +137,37 @@ public interface StockService {
 
 ```
 
-###  비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
+
+
+##  비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
 오더 취소가 이루어진 후에 재소 증가는 동기식이 아니라 비동기식으로 처리하여 재고 시스템의 처리를 위해 주문 취소가 블로킹되지 않도록 처리한다.
 이를 위하여 취소 기록을 남긴 후에 곧바로 취소 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
 
 
+Stock에서는 취소 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다
+
+```
+
+@Service
+public class PolicyHandler{
+    @StreamListener(KafkaProcessor.INPUT)
+    public void onStringEventListener(@Payload String eventString){
+
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderCancelled_Add(@Payload OrderCancelled orderCancelled){
+
+        if(orderCancelled.isMe()){
+            Stock stock = new Stock();
+            stock.setOrderId(paid.getOrderId());
+            stockRepository.save(stock) ;
+            
+        }
+    }
+```
+
+오더 취소 서비스는 재고관리와 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 재고 서비스가 내려간 상태라도 오더 취소는 문제가 없다.
 
 
 # 운영
