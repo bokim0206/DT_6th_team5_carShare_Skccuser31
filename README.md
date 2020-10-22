@@ -325,18 +325,12 @@ horizontalpodautoscaler.autoscaling/alarm         Deployment/carsharestock      
 ```
 
 ## 무정지 재배포
-- Readiness Probe 및 Liveness Probe 설정(buildspec.yml 설정)
+
+### Readiness Probe 및 Liveness Probe 설정(buildspec.yml 설정)
+- 확인은 못함
 
 ![image](https://user-images.githubusercontent.com/42608068/96593140-24146980-1324-11eb-88d5-7dee61001832.png)
-
-### Readiness Probe 설정
 - CI/CD 파이프라인을 통해 새버전으로 재배포 작업함 Git hook 연동 설정되어 Github의 소스 변경 발생 시 자동 빌드 배포됨
-
-
-## Liveness Probe
-```
-미처리
-```
 
 ## ConfigMap 사용
 
