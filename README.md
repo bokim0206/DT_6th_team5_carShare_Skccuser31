@@ -232,26 +232,6 @@ spec:
   trafficPolicy:
     connectionPool:
       http:
-        http1MaxPendingRequests: 30
-        maxRequestsPerConnection: 100
-    outlierDetection:
-      interval: 5s
-      consecutiveErrors: 1
-      baseEjectionTime: 5m
-      maxEjectionPercent: 100
-EOF
-
-kubectl apply -f - <<EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: order
-  namespace: carshare
-spec:
-  host: carshareorder
-  trafficPolicy:
-    connectionPool:
-      http:
         http1MaxPendingRequests: 1
         maxRequestsPerConnection: 1
     outlierDetection:
@@ -262,7 +242,6 @@ spec:
 EOF
 
 ```
-
 
 
 * 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
@@ -306,10 +285,39 @@ Shortest transaction:           0.01
 
 
 ### 오토스케일 아웃
-앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
-Targets unkown 처리 불가로 미처리
+서킷브레이커는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
+Deployment 배포시 resource 설정 적용
+```
+spec:
+      containers:
+          ...
+          resources:
+            limits:
+              cpu: 500m 
+            requests:
+              cpu: 200m 
+```
 
-![image](https://user-images.githubusercontent.com/16017769/96752998-336de280-140a-11eb-90d0-467d3cfa5dbe.png)
+replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 5프로를 넘어서면 replica 를 10개까지 늘려준다
+
+```
+kubectl autoscale deploy carsharestock -n carshare --min=1 --max=10 --cpu-percent=15
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+carsharestock   1/4     4            1           1h
+carsharestock   2/4     4            2           1h
+carsharestock   3/4     4            3           1h
+carsharestock   4/4     4            4           1h
+carsharestock   4/8     4            4           1h
+carsharestock   4/8     4            4           1h
+carsharestock   4/8     4            4           1h
+carsharestock   4/8     8            4           1h
+carsharestock   4/10    8            4           1h
+carsharestock   4/10    8            4           1h
+carsharestock   4/10    8            4           1h
+carsharestock   4/10    10           4           1h
+
+```
+
 
 ## 무정지 재배포
 - Readiness Probe 및 Liveness Probe 설정(buildspec.yml 설정)
@@ -318,7 +326,6 @@ Targets unkown 처리 불가로 미처리
 
 ### Readiness Probe 설정
 - CI/CD 파이프라인을 통해 새버전으로 재배포 작업함 Git hook 연동 설정되어 Github의 소스 변경 발생 시 자동 빌드 배포됨
-![image](https://user-images.githubusercontent.com/16017769/96661148-5c4c9400-1386-11eb-8f4f-9b83cab19b8c.png)
 
 
 ## Liveness Probe
