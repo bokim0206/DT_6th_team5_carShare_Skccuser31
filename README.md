@@ -302,6 +302,10 @@ replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사
 
 ```
 kubectl autoscale deploy carsharestock -n carshare --min=1 --max=10 --cpu-percent=15
+```
+
+```
+kubectl get deploy carsharestock -n carshare -w 
 NAME             READY   UP-TO-DATE   AVAILABLE   AGE
 carsharestock   1/4     4            1           1h
 carsharestock   2/4     4            2           1h
@@ -321,7 +325,7 @@ carsharestock   4/10    10           4           1h
 ```
 $kubectl get hpa carsharestock -n carshare 
 NAME                                                 REFERENCE                   TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
-horizontalpodautoscaler.autoscaling/alarm         Deployment/carsharestock               132%/15%   1         10          5       1h
+horizontalpodautoscaler.autoscaling/alarm         Deployment/carsharestock       132%/15%   1         10          5       1h
 ```
 
 ## 무정지 재배포
